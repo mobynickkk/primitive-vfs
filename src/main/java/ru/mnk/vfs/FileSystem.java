@@ -33,11 +33,11 @@ public class FileSystem {
         }
     }
 
-    public byte[] readFile(String path) throws IOException {
+    public File readFile(String path) throws IOException {
         TransferByteChannel byteChannel = new TransferByteChannel();
         FileDescriptor descriptor = fileDescriptors.get(path);
         inputStream.getChannel().transferTo(descriptor.getBeginOffset(), descriptor.getLength(), byteChannel);
-        return byteChannel.getData();
+        return new File(descriptor, byteChannel);
     }
 
     private long getFileDescriptorsCount(FileInputStream inputStream) throws IOException {
